@@ -8,8 +8,9 @@ Licensed under the MIT License: http://www.opensource.org/licenses/mit-license
 """
 
 import datetime
-import urllib
-import urllib2
+import urllib.request, urllib.parse, urllib.error
+import urllib.request, urllib.error, urllib.parse
+from functools import reduce
 
 GOOGLE_CHARTS_API_URL = 'https://chart.googleapis.com/chart'
 DEFAULT_COLOR = '4D89F9FF' # A kind of nice blue.
@@ -222,15 +223,15 @@ class GanttChart(object):
             except ImportError:
                 raise Exception('Please install PIL (Python Imaging Toolkit) to save an image.')
 
-        import cStringIO
+        import io
 
         try:
-            req = urllib2.Request(url=GOOGLE_CHARTS_API_URL, data=urllib.urlencode(self.params()))
-            resp = urllib2.urlopen(req)
-        except urllib2.HTTPError as e:
+            req = urllib.request.Request(url=GOOGLE_CHARTS_API_URL, data=urllib.parse.urlencode(self.params()).encode('utf8'))
+            resp = urllib.request.urlopen(req)
+        except urllib.error.HTTPError as e:
             return None
 
-        imagedata = cStringIO.StringIO(resp.read())
+        imagedata = io.BytesIO(resp.read())
         i = Image.open(imagedata)
 
 
