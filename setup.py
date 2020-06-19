@@ -10,7 +10,7 @@ setup(name='googlegantt',
         long_description=readme,
         py_modules=['googlegantt'],
         install_requires=[
-            "PIL",
+            "Pillow",
         ],
 )
 
